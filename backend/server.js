@@ -5,13 +5,9 @@ const express = require("express");
 const morgan = require("morgan");
 
 const {
-  getFlights,
-  getFlight,
-  getReservations,
-  addReservation,
-  getSingleReservation,
-  deleteReservation,
-  updateReservation,
+  getNewReleasze,
+  getSearchResults,
+  getCurrentUser,
 } = require("./handlers");
 
 express()
@@ -28,16 +24,9 @@ express()
   // Nothing to modify above or below this line
   // ---------------------------------
 
-  .get("/api/get-flights", getFlights)
-  .get("/api/get-flight/:flight", getFlight)
-  .get("/api/get-reservations", getReservations)
-  .get("/api/get-reservation/:reservation", getSingleReservation)
-
-  .post("/api/add-reservation", addReservation)
-
-  .patch("/api/update-reservation/:reservation", updateReservation)
-
-  .delete("/api/delete-reservation/:reservation", deleteReservation)
+  .get("/api/get-newRelease", getNewReleasze)
+  .get("/api/search/:search", getSearchResults)
+  .get("/api/me", getCurrentUser)
 
   // ---------------------------------
   // Nothing to modify above or below this line

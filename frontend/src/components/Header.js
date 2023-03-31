@@ -2,49 +2,35 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { NavLink, Link } from "react-router-dom";
 
-import slingairLogo from "../assets/logo_text.png";
+const Header = ({ setToken, token }) => {
+  const logout = () => {
+    setToken("");
+    window.sessionStorage.removeItem("token");
+  };
 
-const Header = ({ handleChange, reservationId }) => {
-  const [flightNumbers, setFlightNumbers] = useState([]);
-
-  useEffect(() => {
-    // TODO: GET all flight numbers
-    fetch("/api/get-flights")
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("here", data);
-        setFlightNumbers(data.data);
-      });
-  }, []);
-  const localId = window.localStorage.getItem("reservationId");
+  const CLIENT_ID = "e706776da93b4a3aa0a004534ae4791c";
+  const REDIRECT_URI = "http://localhost:3000";
+  const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
+  const RESPONSE_TYPE = "token";
 
   return (
     <Wrapper>
       <Container>
         <Link to="/">
-          <Logo src={slingairLogo} alt="Slingshot Airlines Logo" />
+          <Logo alt="Slingshot Airlines Logo" />
         </Link>
-        <label>
-          Flight Number:
-          <Select onChange={handleChange}>
-            <option value="">Select a flight...</option>
-
-            {/* TODO: option for each flight number */}
-            {flightNumbers &&
-              flightNumbers.map((flight) => {
-                return (
-                  <option key={flight} value={flight}>
-                    {flight}
-                  </option>
-                );
-              })}
-          </Select>
-        </label>
       </Container>
       <Nav>
         <>
-          {/* TODO: only show link if the user has a reservation already */}
-          {localId && <StyledNavLink to="/reservation">Profile</StyledNavLink>}
+          {token ? (
+            <button onClick={logout}>Logout</button>
+          ) : (
+            <a
+              href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}
+            >
+              Login to Spotify
+            </a>
+          )}
         </>
       </Nav>
     </Wrapper>
