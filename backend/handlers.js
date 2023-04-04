@@ -58,6 +58,31 @@ const getSearchResults = async (req, res) => {
       .json({ status: 400, message: "Error in getting search results " });
   }
 };
+const getGenre = async (req, res) => {
+  const { search } = req.params;
+  //try {
+  var options = {
+    uri: `https://api.spotify.com/v1/recommendations/available-genre-seeds`,
+    qs: {
+      type: "artist",
+      q: `${search}`,
+    },
+    headers: {
+      Authorization: `Bearer ${req.query.token}`,
+    },
+    json: true,
+  };
+
+  const data = await request(options);
+
+  res.status(200).json({
+    status: 200,
+    data: data,
+  });
+  // } catch (err) {
+  //   res.status(400).json({ status: 400, message: "Error in getting genre " });
+  // }
+};
 const getCurrentUser = async (req, res) => {
   //try {
   var options = {
@@ -72,7 +97,7 @@ const getCurrentUser = async (req, res) => {
   console.log("here");
   console.log(data);
 
-  //res.status(200).json({ status: 200, data: data });
+  // res.status(200).json({ status: 200, data: data });
   // } catch (err) {
   //   res
   //     .status(400)
@@ -84,4 +109,5 @@ module.exports = {
   getNewReleasze,
   getSearchResults,
   getCurrentUser,
+  getGenre,
 };

@@ -8,6 +8,7 @@ const {
   getNewReleasze,
   getSearchResults,
   getCurrentUser,
+  getGenre,
 } = require("./handlers");
 
 express()
@@ -27,6 +28,7 @@ express()
   .get("/api/get-newRelease", getNewReleasze)
   .get("/api/search/:search", getSearchResults)
   .get("/api/me", getCurrentUser)
+  .get("/api/genre", getGenre)
 
   // ---------------------------------
   // Nothing to modify above or below this line

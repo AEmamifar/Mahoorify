@@ -10,6 +10,10 @@ import Home from "./Home";
 
 const App = () => {
   const [token, setToken] = useState("");
+
+  const [newRelase, setNewRelease] = useState([]);
+  const [genre, setGenre] = useState([]);
+
   useEffect(() => {
     const url = window.location.href;
     console.log("url", url);
@@ -25,10 +29,26 @@ const App = () => {
   return (
     <BrowserRouter>
       <GlobalStyles />
-      <Header setToken={setToken} token={token} />
+      <Header
+        setToken={setToken}
+        token={token}
+        setNewRelease={setNewRelease}
+        setGenre={setGenre}
+      />
       <Main>
         <Routes>
-          <Route path="/" element={<Home token={token} />} />
+          <Route
+            path="/"
+            element={
+              <Home
+                token={token}
+                newRelase={newRelase}
+                setNewRelease={setNewRelease}
+                genre={genre}
+                setGenre={setGenre}
+              />
+            }
+          />
 
           <Route path="" element={<h1>404: Oops!</h1>} />
         </Routes>

@@ -1,19 +1,11 @@
 import { useState, useEffect } from "react";
+import styled from "styled-components";
+import NewReleaseCard from "./NewRelaseCard";
+import GenreButton from "./GenreButton";
 
-const Home = ({ token }) => {
-  const [userInput, setUserInput] = useState("");
-
-  // useEffect(() => {
-  //   const url = window.location.href;
-  //   console.log("url", url);
-  //   const data = new URL(url);
-  //   console.log("data", data);
-  //   const accessToken = data.href.includes("#")
-  //     ? data.href.split("#")[1].split("=")[1].split("&")[0]
-  //     : "";
-  //   console.log("accessToken", accessToken);
-  //   setToken(accessToken);
-  // }, []);
+const Home = ({ token, newRelase, setNewRelease, genre, setGenre }) => {
+  console.log("newRelase", newRelase);
+  console.log("genre", genre);
 
   useEffect(() => {
     if (token) {
@@ -27,33 +19,63 @@ const Home = ({ token }) => {
       fetch(`/api/get-newRelease?token=${token}`)
         .then((res) => res.json())
         .then((data) => {
+          setNewRelease(data.data.albums.items);
           console.log("new releases", data);
+        });
+      fetch(`/api/genre?token=${token}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setGenre(
+            data.data.genres.sort(() => 0.5 - Math.random()).slice(0, 10)
+          );
+          //data.genres.sort(() => 0.5 - Math.random()).slice(0, 10)
         });
     }
   }, [token]);
-  const SubmitHanlder = (e) => {
-    e.preventDefault();
-    fetch(`/api/search/${userInput}?token=${token}`)
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("data", data);
-      });
-  };
+
+  // search
+  // new relase
+  // genre
 
   return (
     <>
-      <div>Home Landing</div>
-
-      <form onSubmit={SubmitHanlder}>
-        <input
-          onChange={(e) => {
-            setUserInput(e.target.value);
-          }}
-        />
-        <button>Search</button>
-      </form>
+      <StyledNewReleases>
+        {newRelase.map((item) => {
+          return (
+            <NewReleaseCard
+              key={item.id}
+              album_type={item.album_type}
+              artists={item.artists[0].name}
+              image={item.images[0].url}
+            />
+          );
+        })}
+      </StyledNewReleases>
+      <StyledGenre>
+        {genre.map((item) => {
+          return <GenreButton key={item} genre={item} />;
+        })}
+      </StyledGenre>
     </>
   );
 };
+
+const StyledNewReleases = styled.div`
+  width: 80%;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+`;
+
+const StyledGenre = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  margin: 0 auto;
+`;
 
 export default Home;

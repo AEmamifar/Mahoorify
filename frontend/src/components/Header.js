@@ -1,74 +1,88 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link, useNavigate } from "react-router-dom";
 
-const Header = ({ setToken, token }) => {
+const Header = ({ setToken, token, setNewRelease, setGenre }) => {
+  const [userInput, setUserInput] = useState("");
+  const navigate = useNavigate();
   const logout = () => {
     setToken("");
+    navigate("/");
+    setNewRelease([]);
+    setGenre([]);
     window.sessionStorage.removeItem("token");
   };
 
-  const CLIENT_ID = "e706776da93b4a3aa0a004534ae4791c";
+  const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
   const REDIRECT_URI = "http://localhost:3000";
   const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
   const RESPONSE_TYPE = "token";
 
+  const SubmitHanlder = (e) => {
+    e.preventDefault();
+    fetch(`/api/search/${userInput}?token=${token}`)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("data", data);
+      });
+  };
+
   return (
     <Wrapper>
-      <Container>
-        <Link to="/">
-          <Logo alt="Slingshot Airlines Logo" />
-        </Link>
-      </Container>
-      <Nav>
-        <>
-          {token ? (
-            <button onClick={logout}>Logout</button>
-          ) : (
-            <a
-              href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}
-            >
-              Login to Spotify
-            </a>
-          )}
-        </>
-      </Nav>
+      <Link to="/">Home</Link>
+
+      <form onSubmit={SubmitHanlder}>
+        <input
+          onChange={(e) => {
+            setUserInput(e.target.value);
+          }}
+        />
+        <button>Search</button>
+      </form>
+
+      {token ? (
+        <button onClick={logout}>Logout</button>
+      ) : (
+        <a
+          href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}
+        >
+          Login to Spotify
+        </a>
+      )}
     </Wrapper>
   );
 };
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const Select = styled.select`
-  padding: 5px;
-  margin-left: 25px;
-  margin-top: 10px;
-  border-radius: 3px;
-  font-size: 18px;
-  font-family: var(--font-heading);
-  font-weight: bold;
-  border: solid 3px black;
-`;
-
 const Wrapper = styled.header`
   display: flex;
   justify-content: space-between;
-  background: var(--color-alabama-crimson);
-  height: 150px;
-  padding: var(--padding-page) 18px;
-`;
-const Logo = styled.img`
-  height: 60px;
-  width: 550px;
-`;
-const Nav = styled.nav`
-  display: flex;
-  justify-content: flex-end;
   align-items: center;
+  background: var(--color-alabama-crimson);
+  height: 100px;
+  padding: var(--padding-page) 18px;
+  a {
+    color: white;
+    padding: 10px 15px;
+    &:hover {
+      cursor: pointer;
+    }
+    font-size: 20px;
+    text-decoration: none;
+    border: 2px solid black;
+  }
+  button {
+    color: white;
+    padding: 10px 15px;
+    background: none;
+    &:hover {
+      cursor: pointer;
+    }
+    font-size: 20px;
+    text-decoration: none;
+    border: 2px solid black;
+  }
 `;
+
 const StyledNavLink = styled(NavLink)`
   background: var(--color-selective-yellow);
   border: 1px solid transparent;
