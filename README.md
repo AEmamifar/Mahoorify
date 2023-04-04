@@ -1,4 +1,4 @@
-# Node.JS Project: SlingAir!
+# Final Project: Mahoorify!
 
 <img src='frontend/src/assets/screenshots/Mahoorify-1.jpg' style='width:100%' />
 
