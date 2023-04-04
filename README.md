@@ -1,6 +1,6 @@
 # Node.JS Project: SlingAir!
 
-<img src='frontend/src/assets/screenshots/Mahoorify-1.png' style='width:100%' />
+<img src='frontend/src/assets/screenshots/Mahoorify-1.jpg' style='width:100%' />
 
 You just accepted the full-stack developer position at Slingshot Airlines!
 
