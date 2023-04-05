@@ -1,8 +1,8 @@
-# Node.JS Project: SlingAir!
+# Final Project: Mahoorify!
 
-<img src='frontend/src/assets/screenshots/Mahoorify-1.png' style='width:100%' />
+<img src='frontend/src/assets/screenshots/Mahoorify-1.jpg' style='width:100%' />
 
-You just accepted the full-stack developer position at Slingshot Airlines!
+Mahoor is the name of one of the seven Persian musical instruments. Mahoorify is the online platform for audio streaming and media services. 
 
 They were really impressed with the work you did at Concordia Bootcamps. After a conversation with the CEO at the job fair, they hired you on the spot! They have project that they need to ship ASAP and are confident that you can deliver.
 
