@@ -1,8 +1,15 @@
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-const NewReleaseCard = ({ image, artists, album_type }) => {
+const NewReleaseCard = ({ image, artists, album_type, id }) => {
+  const navigate = useNavigate();
+
   return (
-    <Wrapper>
+    <Wrapper
+      onClick={() => {
+        navigate(`/new-release/${id}`);
+      }}
+    >
       <img src={image} />
       <p>{artists}</p>
       <span>{album_type}</span>
@@ -11,6 +18,7 @@ const NewReleaseCard = ({ image, artists, album_type }) => {
 };
 
 const Wrapper = styled.div`
+  cursor: pointer;
   img {
     width: 100px;
   }

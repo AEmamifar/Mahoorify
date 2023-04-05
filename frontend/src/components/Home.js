@@ -28,14 +28,9 @@ const Home = ({ token, newRelase, setNewRelease, genre, setGenre }) => {
           setGenre(
             data.data.genres.sort(() => 0.5 - Math.random()).slice(0, 10)
           );
-          //data.genres.sort(() => 0.5 - Math.random()).slice(0, 10)
         });
     }
   }, [token]);
-
-  // search
-  // new relase
-  // genre
 
   return (
     <>
@@ -47,6 +42,7 @@ const Home = ({ token, newRelase, setNewRelease, genre, setGenre }) => {
               album_type={item.album_type}
               artists={item.artists[0].name}
               image={item.images[0].url}
+              id={item.id}
             />
           );
         })}

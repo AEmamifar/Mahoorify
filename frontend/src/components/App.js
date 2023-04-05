@@ -7,6 +7,7 @@ import Footer from "./Footer";
 import GlobalStyles from "./GlobalStyles";
 
 import Home from "./Home";
+import ReleaseDetails from "./ReleaseDetails";
 
 const App = () => {
   const [token, setToken] = useState("");
@@ -48,6 +49,11 @@ const App = () => {
                 setGenre={setGenre}
               />
             }
+          />
+
+          <Route
+            path="new-release/:id"
+            element={<ReleaseDetails token={token} newRelase={newRelase} />}
           />
 
           <Route path="" element={<h1>404: Oops!</h1>} />
