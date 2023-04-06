@@ -7,8 +7,8 @@ const morgan = require("morgan");
 const {
   getNewReleasze,
   getSearchResults,
-  getCurrentUser,
   getGenre,
+  addUser,
 } = require("./handlers");
 
 express()
@@ -27,9 +27,10 @@ express()
 
   .get("/api/get-newRelease", getNewReleasze)
   .get("/api/search/:search", getSearchResults)
-  .get("/api/me", getCurrentUser)
+
   .get("/api/genre", getGenre)
 
+  .post("/api/add-user", addUser)
   // ---------------------------------
   // Nothing to modify above or below this line
 

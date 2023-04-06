@@ -60,54 +60,59 @@ const getSearchResults = async (req, res) => {
 };
 const getGenre = async (req, res) => {
   const { search } = req.params;
-  //try {
-  var options = {
-    uri: `https://api.spotify.com/v1/recommendations/available-genre-seeds`,
-    qs: {
-      type: "artist",
-      q: `${search}`,
-    },
-    headers: {
-      Authorization: `Bearer ${req.query.token}`,
-    },
-    json: true,
-  };
+  try {
+    var options = {
+      uri: `https://api.spotify.com/v1/recommendations/available-genre-seeds`,
+      qs: {
+        type: "artist",
+        q: `${search}`,
+      },
+      headers: {
+        Authorization: `Bearer ${req.query.token}`,
+      },
+      json: true,
+    };
 
-  const data = await request(options);
+    const data = await request(options);
 
-  res.status(200).json({
-    status: 200,
-    data: data,
-  });
-  // } catch (err) {
-  //   res.status(400).json({ status: 400, message: "Error in getting genre " });
-  // }
+    res.status(200).json({
+      status: 200,
+      data: data,
+    });
+  } catch (err) {
+    res.status(400).json({ status: 400, message: "Error in getting genre " });
+  }
 };
-const getCurrentUser = async (req, res) => {
-  //try {
-  var options = {
-    uri: `https://api.spotify.com/v1/me"`,
-    headers: {
-      Authorization: `Bearer ${req.query.token}`,
-    },
-    json: true,
-  };
 
-  const data = await request(options);
-  console.log("here");
-  console.log(data);
+const addUser = async (req, res) => {
+  const client = await new MongoClient(MONGO_URI, options);
+  try {
+    console.log(req.body);
+    await client.connect();
+    const db = client.db("Mahoorify");
 
-  // res.status(200).json({ status: 200, data: data });
-  // } catch (err) {
-  //   res
-  //     .status(400)
-  //     .json({ status: 400, message: "Error in getting current user " });
-  // }
+    const existingUser = await db
+      .collection("users")
+      .findOne({ _id: req.body._id });
+
+    if (!existingUser) {
+      await db.collection("users").insertOne(req.body);
+      return res.status(201).json({ status: 201, message: "user added" });
+    } else {
+      return res
+        .status(400)
+        .json({ status: 400, message: "user already exists" });
+    }
+  } catch (err) {
+    res.status(400).json({ status: 400, message: "user not added" });
+    console.log(err);
+  }
 };
 
 module.exports = {
   getNewReleasze,
   getSearchResults,
-  getCurrentUser,
+
   getGenre,
+  addUser,
 };

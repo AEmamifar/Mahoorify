@@ -4,18 +4,30 @@ import NewReleaseCard from "./NewRelaseCard";
 import GenreButton from "./GenreButton";
 
 const Home = ({ token, newRelase, setNewRelease, genre, setGenre }) => {
-  console.log("newRelase", newRelase);
-  console.log("genre", genre);
-
   useEffect(() => {
     if (token) {
-      // fetch("https://api.spotify.com/v1/me", {
-      //   headers: { Authorization: `Bearer ${token}` },
-      // })
-      //   .then((res) => res.json())
-      //   .then((data) => {
-      //     console.log("user", data);
-      //   });
+      fetch("https://api.spotify.com/v1/me", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          return data;
+        })
+        .then((user) => {
+          fetch("/api/add-user", {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              _id: user.id,
+              images: user.images,
+              display_name: user.display_name,
+            }),
+          });
+        });
+
       fetch(`/api/get-newRelease?token=${token}`)
         .then((res) => res.json())
         .then((data) => {
@@ -39,9 +51,9 @@ const Home = ({ token, newRelase, setNewRelease, genre, setGenre }) => {
           return (
             <NewReleaseCard
               key={item.id}
-              album_type={item.album_type}
-              artists={item.artists[0].name}
-              image={item.images[0].url}
+              album_type={item.album_type ? item.album_type : item.type}
+              artists={item.artists ? item.artists[0].name : item.name}
+              image={item.images.length ? item.images[0].url : ""}
               id={item.id}
             />
           );
@@ -49,7 +61,14 @@ const Home = ({ token, newRelase, setNewRelease, genre, setGenre }) => {
       </StyledNewReleases>
       <StyledGenre>
         {genre.map((item) => {
-          return <GenreButton key={item} genre={item} />;
+          return (
+            <GenreButton
+              key={item}
+              genre={item}
+              setNewRelease={setNewRelease}
+              token={token}
+            />
+          );
         })}
       </StyledGenre>
     </>

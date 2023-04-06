@@ -23,7 +23,8 @@ const Header = ({ setToken, token, setNewRelease, setGenre }) => {
     fetch(`/api/search/${userInput}?token=${token}`)
       .then((res) => res.json())
       .then((data) => {
-        console.log("data", data);
+        setNewRelease(data.data.artists.items);
+        setUserInput("");
       });
   };
 
@@ -33,6 +34,7 @@ const Header = ({ setToken, token, setNewRelease, setGenre }) => {
 
       <form onSubmit={SubmitHanlder}>
         <input
+          value={userInput}
           onChange={(e) => {
             setUserInput(e.target.value);
           }}

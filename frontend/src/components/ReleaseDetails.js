@@ -17,11 +17,12 @@ const ReleaseDetails = ({ newRelase, token }) => {
       <div>
         {newRelase.map((release) => {
           if (release.id === params.id) {
-            console.log("release", release);
             return (
               <div>
-                <p>{release.artists[0].name}</p>
-                <img src={release.images[0].url} />
+                <p>
+                  {release.artists ? release.artists[0].name : release.name}
+                </p>
+                <img src={release.images.length ? release.images[0].url : ""} />
                 <SpotifyPlayer
                   uri={release.uri}
                   size={size}
