@@ -4,10 +4,12 @@ import SpotifyPlayer from "react-spotify-player";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { CurrentUserContext } from "./CurrentUser";
 
-const ReleaseDetails = ({ newRelase, token }) => {
-  const { currentUser } = useContext(CurrentUserContext);
+const ReleaseDetails = () => {
+  const { currentUser, newRelase } = useContext(CurrentUserContext);
   const [isLiked, setIsLiked] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [comment, setComment] = useState("");
+  const [updatedComment, setUpdatedComment] = useState("");
   const [allComments, setAllComments] = useState([]);
   const [newComment, setNewComment] = useState(false);
   const params = useParams();
@@ -35,7 +37,7 @@ const ReleaseDetails = ({ newRelase, token }) => {
       .then((data) => {
         setAllComments(data.data);
       });
-  }, [isLiked, newComment]);
+  }, [isLiked, newComment, currentUser]);
 
   const handleLike = (release) => {
     if (isLiked) {
@@ -68,7 +70,9 @@ const ReleaseDetails = ({ newRelase, token }) => {
       })
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
+          if (data.status === 201) {
+            setIsLiked(true);
+          }
         });
     }
   };
@@ -107,13 +111,37 @@ const ReleaseDetails = ({ newRelase, token }) => {
       });
   };
 
+  const hanldeEdit = (e, _id) => {
+    e.preventDefault();
+    fetch("/api/update-comment", {
+      method: "PATCH",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        _id,
+        songId: params.id,
+        userId: currentUser._id,
+        comment: updatedComment,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.status === 200) {
+          setNewComment(!newComment);
+          setIsOpen(false);
+        }
+      });
+  };
+
   return (
     <>
       <div>
         {newRelase.map((release) => {
           if (release.id === params.id) {
             return (
-              <div>
+              <div key={release._id}>
                 <p>
                   {release.artists ? release.artists[0].name : release.name}
                 </p>
@@ -152,20 +180,44 @@ const ReleaseDetails = ({ newRelase, token }) => {
                   <div>
                     {allComments &&
                       allComments.map((item) => {
-                        return (
-                          <>
-                            <p>{item.comment}</p>{" "}
-                            <span>
-                              <button
-                                onClick={() => {
-                                  hanldeDelete(item._id);
-                                }}
-                              >
-                                Delete
-                              </button>
-                            </span>
-                          </>
-                        );
+                        if (item.songId === params.id) {
+                          return (
+                            <div key={item._id}>
+                              <p>{item.comment}</p>
+                              {isOpen && (
+                                <form
+                                  onSubmit={(e) => {
+                                    hanldeEdit(e, item._id);
+                                  }}
+                                >
+                                  <input
+                                    onChange={(e) => {
+                                      setUpdatedComment(e.target.value);
+                                    }}
+                                  />
+                                  <button>Save</button>
+                                </form>
+                              )}
+
+                              <span>
+                                <button
+                                  onClick={() => {
+                                    hanldeDelete(item._id);
+                                  }}
+                                >
+                                  Delete
+                                </button>
+                                <button
+                                  onClick={() => {
+                                    setIsOpen(!isOpen);
+                                  }}
+                                >
+                                  Edit
+                                </button>
+                              </span>
+                            </div>
+                          );
+                        }
                       })}
                   </div>
                 </div>

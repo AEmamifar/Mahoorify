@@ -1,10 +1,12 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import styled from "styled-components";
-import { NavLink, Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { CurrentUserContext } from "./CurrentUser";
+import Mahoorify from "../assets/Mahoorify.jpg";
 
-const Header = ({ setToken, token, setNewRelease, setGenre }) => {
-  const { currentUser } = useContext(CurrentUserContext);
+const Header = () => {
+  const { currentUser, token, setToken, setNewRelease, setGenre } =
+    useContext(CurrentUserContext);
   const [userInput, setUserInput] = useState("");
   const navigate = useNavigate();
   const logout = () => {
@@ -33,6 +35,7 @@ const Header = ({ setToken, token, setNewRelease, setGenre }) => {
   return (
     <Wrapper>
       <Link to="/">Home</Link>
+      <img src={Mahoorify} />
 
       <form onSubmit={SubmitHanlder}>
         <input
@@ -44,7 +47,7 @@ const Header = ({ setToken, token, setNewRelease, setGenre }) => {
         <button>Search</button>
       </form>
 
-      {currentUser && (
+      {currentUser && token && (
         <button
           onClick={() => {
             navigate("/profile");
@@ -73,6 +76,10 @@ const Wrapper = styled.header`
   background: var(--color-alabama-crimson);
   height: 100px;
   padding: var(--padding-page) 18px;
+  img {
+    width: 80px;
+    border-radius: 50%;
+  }
   a {
     color: white;
     padding: 10px 15px;
@@ -93,30 +100,6 @@ const Wrapper = styled.header`
     font-size: 20px;
     text-decoration: none;
     border: 2px solid black;
-  }
-`;
-
-const StyledNavLink = styled(NavLink)`
-  background: var(--color-selective-yellow);
-  border: 1px solid transparent;
-  border-radius: 4px;
-  color: var(--color-alabama-crimson);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: var(--font-heading);
-  font-size: 18px;
-  height: 42px;
-  margin: 0 0 0 8px;
-  padding: 0 14px;
-  width: 100%;
-  text-decoration: none;
-  transition: all ease 400ms;
-
-  &:hover {
-    background: var(--color-alabama-crimson);
-    color: var(--color-selective-yellow);
-    border-color: var(--color-selective-yellow);
   }
 `;
 

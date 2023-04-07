@@ -87,7 +87,6 @@ const getGenre = async (req, res) => {
 const addUser = async (req, res) => {
   const client = await new MongoClient(MONGO_URI, options);
   try {
-    console.log(req.body);
     await client.connect();
     const db = client.db("Mahoorify");
 
@@ -189,18 +188,39 @@ const getAllComments = async (req, res) => {
 const deleteComment = async (req, res) => {
   const client = await new MongoClient(MONGO_URI, options);
   const { userId, songId, _id } = req.query;
-  // try {
-  await client.connect();
-  const db = client.db("Mahoorify");
+  try {
+    await client.connect();
+    const db = client.db("Mahoorify");
 
-  await db
-    .collection("comments")
-    .deleteOne({ userId: userId, songId: songId, _id: new ObjectId(_id) });
-  return res.status(200).json({ status: 200, message: "comment deleted" });
-  // } catch (err) {
-  //   res.status(400).json({ status: 400, message: "couldnt get all comments " });
-  //   console.log(err);
-  // }
+    await db
+      .collection("comments")
+      .deleteOne({ userId: userId, songId: songId, _id: new ObjectId(_id) });
+    return res.status(200).json({ status: 200, message: "comment deleted" });
+  } catch (err) {
+    res.status(400).json({ status: 400, message: "couldnt get all comments " });
+    console.log(err);
+  }
+};
+const updateHandler = async (req, res) => {
+  const client = await new MongoClient(MONGO_URI, options);
+  const { userId, songId, _id, comment } = req.body;
+  try {
+    await client.connect();
+    const db = client.db("Mahoorify");
+
+    await db
+      .collection("comments")
+      .updateOne(
+        { userId: userId, songId: songId, _id: new ObjectId(_id) },
+        { $set: { comment: comment } }
+      );
+    return res.status(200).json({ status: 200, message: "comment updated" });
+  } catch (err) {
+    res
+      .status(400)
+      .json({ status: 400, message: "couldnt updated the comment" });
+    console.log(err);
+  }
 };
 
 module.exports = {
@@ -214,4 +234,5 @@ module.exports = {
   addComment,
   getAllComments,
   deleteComment,
+  updateHandler,
 };

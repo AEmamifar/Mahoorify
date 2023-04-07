@@ -2,13 +2,13 @@ import { createGlobalStyle } from "styled-components";
 
 export default createGlobalStyle`
   :root {
-    --color-cadmium-red: #D80026;
-    --color-alabama-crimson: #AA001E;
-    --color-orange: #F29D00;
+    --color-cadmium-red: #42f54e;
+    --color-alabama-crimson: #42f54e;
+    --color-orange: #414541;
     --color-selective-yellow: #FDBB01;
     --color-desert-sand: #E3C4A6;
-    --font-heading: 'Permanent Marker', Arial, Helvetica, sans-serif;
-    --font-body: 'Kosugi', Arial, Helvetica, sans-serif;
+    --font-heading:  sans-serif;
+    --font-body: sans-serif;
     --padding-page: 24px;
   }
 
@@ -63,8 +63,9 @@ h3,
 label,
 button {
   color: #fff;
-  font-family: var(--font-heading);
-  font-size: 32px;
+  background-color: "black";
+  padding: 5px 12px;
+  font-size: 24px;
   text-align: center;
 }
 p,

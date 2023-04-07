@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState, useEffect } from "react";
+
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Header from "./Header";
@@ -11,51 +11,14 @@ import ReleaseDetails from "./ReleaseDetails";
 import Profile from "./Profile";
 
 const App = () => {
-  const [token, setToken] = useState("");
-
-  const [newRelase, setNewRelease] = useState([]);
-  const [genre, setGenre] = useState([]);
-
-  useEffect(() => {
-    const url = window.location.href;
-    console.log("url", url);
-    const data = new URL(url);
-    console.log("data", data);
-    const accessToken = data.href.includes("#")
-      ? data.href.split("#")[1].split("=")[1].split("&")[0]
-      : "";
-    console.log("accessToken", accessToken);
-    setToken(accessToken);
-  }, []);
-
   return (
     <BrowserRouter>
       <GlobalStyles />
-      <Header
-        setToken={setToken}
-        token={token}
-        setNewRelease={setNewRelease}
-        setGenre={setGenre}
-      />
+      <Header />
       <Main>
         <Routes>
-          <Route
-            path="/"
-            element={
-              <Home
-                token={token}
-                newRelase={newRelase}
-                setNewRelease={setNewRelease}
-                genre={genre}
-                setGenre={setGenre}
-              />
-            }
-          />
-          <Route
-            path="new-release/:id"
-            element={<ReleaseDetails token={token} newRelase={newRelase} />}
-          />
-
+          <Route path="/" element={<Home />} />
+          <Route path="new-release/:id" element={<ReleaseDetails />} />
           <Route path="/profile" element={<Profile />} />
 
           <Route path="" element={<h1>404: Oops!</h1>} />

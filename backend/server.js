@@ -15,6 +15,7 @@ const {
   addComment,
   getAllComments,
   deleteComment,
+  updateHandler,
 } = require("./handlers");
 
 express()
@@ -41,6 +42,7 @@ express()
   .post("/api/add-comment", addComment)
   .get("/api/get-comments", getAllComments)
   .delete("/api/delete-comment", deleteComment)
+  .patch("/api/update-comment", updateHandler)
   .post("/api/add-user", addUser)
 
   // ---------------------------------

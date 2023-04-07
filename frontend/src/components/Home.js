@@ -1,56 +1,12 @@
-import { useState, useEffect, useContext } from "react";
+import { useContext } from "react";
 import styled from "styled-components";
 import NewReleaseCard from "./NewRelaseCard";
 import GenreButton from "./GenreButton";
 import { CurrentUserContext } from "./CurrentUser";
-
-const Home = ({ token, newRelase, setNewRelease, genre, setGenre }) => {
-  const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
-  useEffect(() => {
-    if (token) {
-      fetch("https://api.spotify.com/v1/me", {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          return data;
-        })
-        .then((user) => {
-          setCurrentUser({
-            _id: user.id,
-            images: user.images,
-            display_name: user.display_name,
-          });
-
-          fetch("/api/add-user", {
-            method: "POST",
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              _id: user.id,
-              images: user.images,
-              display_name: user.display_name,
-            }),
-          });
-        });
-
-      fetch(`/api/get-newRelease?token=${token}`)
-        .then((res) => res.json())
-        .then((data) => {
-          setNewRelease(data.data.albums.items);
-          console.log("new releases", data);
-        });
-      fetch(`/api/genre?token=${token}`)
-        .then((res) => res.json())
-        .then((data) => {
-          setGenre(
-            data.data.genres.sort(() => 0.5 - Math.random()).slice(0, 10)
-          );
-        });
-    }
-  }, [token]);
+import Mahoorify from "../assets/Mahoorify.jpg";
+const Home = () => {
+  const { token, newRelase, setNewRelease, genre } =
+    useContext(CurrentUserContext);
 
   return (
     <>
@@ -61,7 +17,7 @@ const Home = ({ token, newRelase, setNewRelease, genre, setGenre }) => {
               key={item.id}
               album_type={item.album_type ? item.album_type : item.type}
               artists={item.artists ? item.artists[0].name : item.name}
-              image={item.images.length ? item.images[0].url : ""}
+              image={item.images.length ? item.images[0].url : Mahoorify}
               id={item.id}
             />
           );

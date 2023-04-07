@@ -25,6 +25,10 @@ const Wrapper = styled.div`
   margin: 10px;
   padding: 10px;
   text-align: center;
+  p,
+  span {
+    color: white;
+  }
 `;
 
 export default NewReleaseCard;

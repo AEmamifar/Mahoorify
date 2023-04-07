@@ -22,6 +22,18 @@ const GenreButton = ({ genre, token, setNewRelease }) => {
 
 const Wrapper = styled.div`
   margin: 5px;
-  padding: 5px;
+
+  button {
+    padding: 5px 12px;
+    background-color: black;
+    border: 1px solid white;
+    border-radius: 5px;
+    &:hover {
+      background-color: white;
+      color: black;
+      transition: 0.5s ease-out all;
+      cursor: pointer;
+    }
+  }
 `;
 export default GenreButton;
