@@ -9,6 +9,12 @@ const {
   getSearchResults,
   getGenre,
   addUser,
+  handleAddSong,
+  getLikedSong,
+  deleteLikedSong,
+  addComment,
+  getAllComments,
+  deleteComment,
 } = require("./handlers");
 
 express()
@@ -29,8 +35,14 @@ express()
   .get("/api/search/:search", getSearchResults)
 
   .get("/api/genre", getGenre)
-
+  .post("/api/add-user-song", handleAddSong)
+  .get("/api/get-liked-song", getLikedSong)
+  .delete("/api/delete-liked-song", deleteLikedSong)
+  .post("/api/add-comment", addComment)
+  .get("/api/get-comments", getAllComments)
+  .delete("/api/delete-comment", deleteComment)
   .post("/api/add-user", addUser)
+
   // ---------------------------------
   // Nothing to modify above or below this line
 

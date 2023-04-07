@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { NavLink, Link, useNavigate } from "react-router-dom";
+import { CurrentUserContext } from "./CurrentUser";
 
 const Header = ({ setToken, token, setNewRelease, setGenre }) => {
+  const { currentUser } = useContext(CurrentUserContext);
   const [userInput, setUserInput] = useState("");
   const navigate = useNavigate();
   const logout = () => {
@@ -42,6 +44,15 @@ const Header = ({ setToken, token, setNewRelease, setGenre }) => {
         <button>Search</button>
       </form>
 
+      {currentUser && (
+        <button
+          onClick={() => {
+            navigate("/profile");
+          }}
+        >
+          Profile
+        </button>
+      )}
       {token ? (
         <button onClick={logout}>Logout</button>
       ) : (

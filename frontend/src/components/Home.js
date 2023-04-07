@@ -1,9 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
 import NewReleaseCard from "./NewRelaseCard";
 import GenreButton from "./GenreButton";
+import { CurrentUserContext } from "./CurrentUser";
 
 const Home = ({ token, newRelase, setNewRelease, genre, setGenre }) => {
+  const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
   useEffect(() => {
     if (token) {
       fetch("https://api.spotify.com/v1/me", {
@@ -14,6 +16,12 @@ const Home = ({ token, newRelase, setNewRelease, genre, setGenre }) => {
           return data;
         })
         .then((user) => {
+          setCurrentUser({
+            _id: user.id,
+            images: user.images,
+            display_name: user.display_name,
+          });
+
           fetch("/api/add-user", {
             method: "POST",
             headers: {

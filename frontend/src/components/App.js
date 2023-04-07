@@ -8,6 +8,7 @@ import GlobalStyles from "./GlobalStyles";
 
 import Home from "./Home";
 import ReleaseDetails from "./ReleaseDetails";
+import Profile from "./Profile";
 
 const App = () => {
   const [token, setToken] = useState("");
@@ -50,11 +51,12 @@ const App = () => {
               />
             }
           />
-
           <Route
             path="new-release/:id"
             element={<ReleaseDetails token={token} newRelase={newRelase} />}
           />
+
+          <Route path="/profile" element={<Profile />} />
 
           <Route path="" element={<h1>404: Oops!</h1>} />
         </Routes>
