@@ -27,6 +27,7 @@ const getNewReleasze = async (req, res) => {
 
     res.status(200).json({ status: 200, data: data });
   } catch (err) {
+    console.log(err.message);
     res
       .status(400)
       .json({ status: 400, message: "Error in getting new releases" });

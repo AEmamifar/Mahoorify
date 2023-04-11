@@ -75,31 +75,34 @@ const Wrapper = styled.header`
   align-items: center;
   background: var(--color-alabama-crimson);
   height: 100px;
-  padding: var(--padding-page) 18px;
+  padding: 20px;
+  position: sticky;
+  top: 0;
   img {
     width: 80px;
     border-radius: 50%;
   }
-  a {
-    color: white;
-    padding: 10px 15px;
-    &:hover {
-      cursor: pointer;
-    }
-    font-size: 20px;
-    text-decoration: none;
-    border: 2px solid black;
+  input {
+    padding: 4px 30px;
+    margin-right: 5px;
   }
-  button {
+  a,
+  button,
+  Link {
     color: white;
     padding: 10px 15px;
+
+    border: 2px solid black;
     background: none;
+    text-decoration: none;
+    border-radius: 10px;
+    background: black;
     &:hover {
       cursor: pointer;
+      color: black;
+      background: white;
+      transition: 0.5s ease-in-out all;
     }
-    font-size: 20px;
-    text-decoration: none;
-    border: 2px solid black;
   }
 `;
 

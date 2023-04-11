@@ -9,7 +9,7 @@ export default createGlobalStyle`
     --color-desert-sand: #E3C4A6;
     --font-heading:  sans-serif;
     --font-body: sans-serif;
-    --padding-page: 24px;
+ 
   }
 
   /* http://meyerweb.com/eric/tools/css/reset/
@@ -42,9 +42,7 @@ export default createGlobalStyle`
   footer, header, hgroup, menu, nav, section {
       display: block;
   }
-  body {
-      line-height: 1;
-  }
+
   ol, ul {
       list-style: none;
   }

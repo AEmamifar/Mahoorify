@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import SpotifyPlayer from "react-spotify-player";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { CurrentUserContext } from "./CurrentUser";
+import styled from "styled-components";
 
 const ReleaseDetails = () => {
   const { currentUser, newRelase } = useContext(CurrentUserContext);
@@ -15,7 +16,7 @@ const ReleaseDetails = () => {
   const params = useParams();
   // size may also be a plain string using the presets 'large' or 'compact'
   const size = {
-    width: "100%",
+    width: "50%",
     height: 300,
   };
   const view = "list"; // or 'coverart'
@@ -61,7 +62,7 @@ const ReleaseDetails = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          artists: release.artists,
+          artists: release.artists ? release.artists : release.name,
           images: release.images,
           uri: release.uri,
           userId: currentUser._id,
@@ -136,24 +137,31 @@ const ReleaseDetails = () => {
   };
 
   return (
-    <>
-      <div>
+    <MainDiv>
+      <>
         {newRelase.map((release) => {
           if (release.id === params.id) {
             return (
               <div key={release._id}>
-                <p>
-                  {release.artists ? release.artists[0].name : release.name}
-                </p>
-                <img src={release.images.length ? release.images[0].url : ""} />
-                <SpotifyPlayer
-                  uri={release.uri}
-                  size={size}
-                  view={view}
-                  theme={theme}
-                />
-                <div>
+                <StyledSong>
+                  <Singer>
+                    <span>
+                      {release.artists ? release.artists[0].name : release.name}
+                    </span>
+                    <img
+                      src={release.images.length ? release.images[0].url : ""}
+                    />
+                  </Singer>
+                  <SpotifyPlayer
+                    uri={release.uri}
+                    size={size}
+                    view={view}
+                    theme={theme}
+                  />
+                </StyledSong>
+                <StyledActions>
                   <button
+                    style={{ background: "none" }}
                     onClick={() => {
                       handleLike(release);
                     }}
@@ -173,16 +181,16 @@ const ReleaseDetails = () => {
                     />
                     <button>Comment</button>
                   </form>
-                </div>
+                </StyledActions>
 
-                <div>
+                <SongComments>
                   <h2>Comments</h2>
                   <div>
                     {allComments &&
                       allComments.map((item) => {
                         if (item.songId === params.id) {
                           return (
-                            <div key={item._id}>
+                            <SingleComment key={item._id}>
                               <p>{item.comment}</p>
                               {isOpen && (
                                 <form
@@ -215,19 +223,100 @@ const ReleaseDetails = () => {
                                   Edit
                                 </button>
                               </span>
-                            </div>
+                            </SingleComment>
                           );
                         }
                       })}
                   </div>
-                </div>
+                </SongComments>
               </div>
             );
           }
         })}
-      </div>
-    </>
+      </>
+    </MainDiv>
   );
 };
 
+const MainDiv = styled.div`
+  width: 100vw;
+  height: 100vh;
+  overflow-x: hidden;
+`;
+
+const SingleComment = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  p {
+    color: white;
+    font-size: 24px;
+    margin-right: 5rem;
+    padding: 2rem 1rem;
+  }
+  button {
+    margin: 0px 5px;
+    color: white;
+    background: black;
+    border-radius: 5px;
+    &:hover {
+      background-color: white;
+      color: black;
+      transition: 0.5s ease-out all;
+      cursor: pointer;
+    }
+  }
+`;
+
+const SongComments = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  margin: 0rem auto;
+  h2 {
+    margin: 3rem 0rem;
+  }
+`;
+
+const StyledActions = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  button {
+    margin: 0px 5px;
+    color: white;
+    background: black;
+    border-radius: 5px;
+    &:hover {
+      background-color: white;
+      color: black;
+      transition: 0.5s ease-out all;
+      cursor: pointer;
+    }
+  }
+`;
+
+const StyledSong = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  img {
+    width: 250px;
+    border-radius: 25%;
+  }
+`;
+
+const Singer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  span {
+    font-size: 20px;
+    color: white;
+  }
+  margin-bottom: 50px;
+`;
 export default ReleaseDetails;
