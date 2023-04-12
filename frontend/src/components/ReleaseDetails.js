@@ -6,14 +6,17 @@ import { CurrentUserContext } from "./CurrentUser";
 import styled from "styled-components";
 
 const ReleaseDetails = () => {
-  const { currentUser, newRelase } = useContext(CurrentUserContext);
+  const { currentUser, newRelase, setNewRelease, token } =
+    useContext(CurrentUserContext);
   const [isLiked, setIsLiked] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [comment, setComment] = useState("");
   const [updatedComment, setUpdatedComment] = useState("");
   const [allComments, setAllComments] = useState([]);
   const [newComment, setNewComment] = useState(false);
+
   const params = useParams();
+
   // size may also be a plain string using the presets 'large' or 'compact'
   const size = {
     width: "50%",
@@ -207,22 +210,24 @@ const ReleaseDetails = () => {
                                 </form>
                               )}
 
-                              <span>
-                                <button
-                                  onClick={() => {
-                                    hanldeDelete(item._id);
-                                  }}
-                                >
-                                  Delete
-                                </button>
-                                <button
-                                  onClick={() => {
-                                    setIsOpen(!isOpen);
-                                  }}
-                                >
-                                  Edit
-                                </button>
-                              </span>
+                              {currentUser._id === item.userId && (
+                                <span>
+                                  <button
+                                    onClick={() => {
+                                      hanldeDelete(item._id);
+                                    }}
+                                  >
+                                    Delete
+                                  </button>
+                                  <button
+                                    onClick={() => {
+                                      setIsOpen(!isOpen);
+                                    }}
+                                  >
+                                    Edit
+                                  </button>
+                                </span>
+                              )}
                             </SingleComment>
                           );
                         }

@@ -33,21 +33,23 @@ const Profile = () => {
         <StyledPlayList>
           <h3>{currentUser.display_name}' s Liked Songs</h3>
           <StyledSongs>
-            {playList.find((song) => song.userId === currentUser._id) ? (
-              playList.map((song) => {
-                return (
-                  <NewReleaseCard
-                    key={song.songId}
-                    image={song.images[0].url}
-                    artists={
-                      Array.isArray(song.artists)
-                        ? song.artists[0].name
-                        : song.artists
-                    }
-                    id={song.songId}
-                  />
-                );
-              })
+            {playList.some((song) => song.userId === currentUser._id) ? (
+              playList
+                .filter((song) => song.userId === currentUser._id)
+                .map((song) => {
+                  return (
+                    <NewReleaseCard
+                      key={song.songId}
+                      image={song.images[0].url}
+                      artists={
+                        Array.isArray(song.artists)
+                          ? song.artists[0].name
+                          : song.artists
+                      }
+                      id={song.songId}
+                    />
+                  );
+                })
             ) : (
               <h2>There are no songs liked yet!</h2>
             )}

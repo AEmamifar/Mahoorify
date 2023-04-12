@@ -27,6 +27,7 @@ const Header = () => {
     fetch(`/api/search/${userInput}?token=${token}`)
       .then((res) => res.json())
       .then((data) => {
+        navigate("/");
         setNewRelease(data.data.artists.items);
         setUserInput("");
       });
