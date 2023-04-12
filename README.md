@@ -8,5 +8,12 @@ Mahoor is the name of one of the seven Persian musical instruments. Mahoorify is
 
 ## Features
 
-- Searching Music
+- Search Music
+- Check New Weekly Releases
+- Play Music
+- Song Comments
+- Create Playlist
+- User authentication
+- Genre Quick Search
+
 
